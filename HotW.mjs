@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
     socket.on("buttonPress", () => {
         console.log("PRESSED!");
         launchProcess();
-        // io.emit("S2C", "RECEIVED!");
+        io.emit("S2C", "PRESSED!");
     });
     socket.on("disconnect", () => { console.log("DISCONNECTED..."); });
 });
