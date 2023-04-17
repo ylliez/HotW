@@ -111,8 +111,14 @@ async function doTheThing() {
         case 2:
             runI2T();
             break;
+        // case 3:
+        //     runT2S();
+        //     break;
+        // case 4:
+        //     stepS2T();
+        //     break;
         case 3:
-            runT2S();
+            playAudio();
             break;
         case 4:
             stepS2T();
@@ -188,46 +194,47 @@ async function getPrompt(text) {
     console.log(`SAVING...`)
     console.log(`PRINTING...`) // fix this
     fs.writeFile(filestep + `.txt`, text, function (err, res) {
-        printPrompt(text);
-    });
-}
-
-function printPrompt(text) {
-    // console.log(`PRINTING...`)
-    device.open(function (error) {
-        thermalPrinter
-            .size(1, 1)
-            // .size(0.5, 0.5)
-            .text(text)
-            .feed()
-            .feed()
-            // .cut()
-            .close();
-    });
-    setTimeout(function () { incrementStepAndTurnLedOn(); }, 2000);
-}
-
-async function runT2S() {
-    console.log("CAPTURING...");
-    NodeWebcam.capture("webcam_testOCR", { device: 'HD USB Camera', callbackReturn: "buffer" }, function (err, data) {
-        recognizeOCR(data)
-    })
-}
-
-async function recognizeOCR(data) {
-    console.log("RECOGNIZING...");
-    const resultOCR = await recognize(data)
-    let textOCR = resultOCR.replace(/\n/g, "");
-    console.log(textOCR)
-    saveOCR(textOCR)
-}
-
-function saveOCR(text) {
-    console.log(`SAVING...`)
-    fs.writeFile(filestep + `.txt`, text, function (err, res) {
+        // printPrompt(text);
         predictT2S(text);
     });
 }
+
+// function printPrompt(text) {
+//     // console.log(`PRINTING...`)
+//     device.open(function (error) {
+//         thermalPrinter
+//             .size(1, 1)
+//             // .size(0.5, 0.5)
+//             .text(text)
+//             .feed()
+//             .feed()
+//             // .cut()
+//             .close();
+//     });
+//     setTimeout(function () { incrementStepAndTurnLedOn(); }, 2000);
+// }
+
+// async function runT2S() {
+//     console.log("CAPTURING...");
+//     NodeWebcam.capture("webcam_testOCR", { device: 'HD USB Camera', callbackReturn: "buffer" }, function (err, data) {
+//         recognizeOCR(data)
+//     })
+// }
+
+// async function recognizeOCR(data) {
+//     console.log("RECOGNIZING...");
+//     const resultOCR = await recognize(data)
+//     let textOCR = resultOCR.replace(/\n/g, "");
+//     console.log(textOCR)
+//     saveOCR(textOCR)
+// }
+
+// function saveOCR(text) {
+//     console.log(`SAVING...`)
+//     fs.writeFile(filestep + `.txt`, text, function (err, res) {
+//         predictT2S(text);
+//     });
+// }
 
 async function predictT2S(text) {
     console.log("PREDICTING T2S...");
@@ -252,7 +259,8 @@ function writeAudio(buffer) {
     return new Promise((resolve, reject) => {
         console.log(`SAVING...`)
         fs.writeFile(filestep + `.mp3`, buffer, function (err, res) {
-            resolve(playAudio());
+            // resolve(playAudio());
+            resolve(incrementStepAndTurnLedOn());
             if (err) reject(err);
         });
     })
