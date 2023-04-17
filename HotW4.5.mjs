@@ -62,27 +62,27 @@ function launchProcess() {
     // let filepath = `app/${timestamp}_${i}`
     // console.log(filepath);
 
-    // board = new five.Board({ repl: false, debug: false })
-    // board.on("ready", function () {
-    //     console.log(`STARTING...`)
-    //     button = new five.Button(8);
-    //     led = new five.Led(2);
-    //     led.on();
-    //     button.on("down", function () {
-    //         if (unimpressed) {
-    //             unimpressed = false;
-    //             setTimeout(function () { unimpressed = true; }, 1000);
-    //             if (delighted) {
-    //                 led.off();
-    //                 delighted = false;
-    //                 doTheThing();
-    //             } else {
-    //                 sound.play("buzzer.mp3", 0.1);
-    //                 console.log("<buzzer.mp3>")
-    //             }
-    //         }
-    //     });
-    // });
+    board = new five.Board({ repl: false, debug: false })
+    board.on("ready", function () {
+        console.log(`STARTING...`)
+        button = new five.Button(8);
+        led = new five.Led(2);
+        led.on();
+        button.on("down", function () {
+            if (unimpressed) {
+                unimpressed = false;
+                setTimeout(function () { unimpressed = true; }, 1000);
+                if (delighted) {
+                    led.off();
+                    delighted = false;
+                    doTheThing();
+                } else {
+                    sound.play("buzzer.mp3", 0.1);
+                    console.log("<buzzer.mp3>")
+                }
+            }
+        });
+    });
 }
 
 function incrementStepAndTurnLedOn() {
