@@ -8,9 +8,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-// const port = process.env.PORT;
+const port = process.env.PORT;
 // if (port == null || port == "") { port = 4200; }
-const port = 4200;
+// const port = 4200;
 const server = http.createServer(app);
 const io = new SocketIO(server);
 server.listen(port, () => { console.log('server listening on port ' + port); })
