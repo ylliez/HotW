@@ -4,7 +4,8 @@
   "description": "",
   "main": "HotW.mjs",
   "engines": {
-    "node": "18.x"
+    "node": "16.17.0",
+    "npm": "8.15.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
