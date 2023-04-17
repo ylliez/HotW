@@ -41,7 +41,6 @@ import five from 'johnny-five';
 import NodeWebcam from "node-webcam";
 import recognize from 'tesseractocr';
 import mic from 'mic';
-import * as url from 'url';
 
 const modelT2I = await replicate.model("stability-ai/stable-diffusion:f178fa7a1ae43a9a9af01b833b9d2ecf97b1bcb0acfd2dc5dd04895e042863f1")
 const modelI2T = await replicate.model("methexis-inc/img2prompt:50adaf2d3ad20a6f911a8a9e3ccf777b263b8596fbd2c8fc26e8888f8a0edbb5");
