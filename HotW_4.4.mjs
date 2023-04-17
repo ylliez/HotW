@@ -31,8 +31,8 @@ import replicate from 'replicate'
 import fetch from 'node-fetch'
 import fs from 'fs'
 import pngToJpeg from 'png-to-jpeg'
-// import escpos from 'escpos';
-// import USB from 'escpos-usb';
+import escpos from 'escpos';
+import USB from 'escpos-usb';
 import Printer from 'c410-printer';
 import sound from "sound-play";
 import five from 'johnny-five';
@@ -45,8 +45,8 @@ const modelI2T = await replicate.model("methexis-inc/img2prompt:50adaf2d3ad20a6f
 const modelT2S = await replicate.model("afiaka87/tortoise-tts:e9658de4b325863c4fcdc12d94bb7c9b54cbfe351b7ca1b36860008172b91c71")
 const modelS2T = await replicate.model("openai/whisper:e39e354773466b955265e969568deb7da217804d8e771ea8c9cd0cef6591f8bc")
 let predictionT2I, outputT2I, predictionI2T, outputI2T, predictionT2S, outputT2S, predictionS2T, outputS2T;
-// const device = new USB(10473, 649);
-// const thermalPrinter = new escpos.Printer(device);
+const device = new USB(10473, 649);
+const thermalPrinter = new escpos.Printer(device);
 let board, button, led;
 let unimpressed = true, delighted = true;
 let iter = 1, step = 1;
@@ -104,7 +104,10 @@ async function doTheThing() {
             S2T2I();
             break;
         case 2:
-            I2T2S();
+            I2T();
+            break;
+        case 3:
+            T2S();
             break;
     }
 }
@@ -209,7 +212,7 @@ function T2IprintImage() {
     setTimeout(function () { incrementStepAndTurnLedOn(); }, 15000);
 }
 
-function I2T2S() {
+function I2T() {
     I2TcaptureImage();
 }
 
@@ -233,53 +236,52 @@ async function I2TfetchText(text) {
     console.log(`I2T | FETCHING TEXT...`)
     // console.log(`PRINTING...`) // fix this
     fs.writeFile(`${fileiter}-6.txt`, text, function (err, res) {
-        // I2TprintText(text);
-        T2SpredictSpeech(text);
+        I2TprintText(text);
     });
 }
 
-// function I2TprintText(text) {
-//     console.log(`I2T | PRINTING TEXT...`)
-//     device.open(function (error) {
-//         thermalPrinter
-//             .size(1, 1)
-//             // .size(0.5, 0.5)
-//             .text(text)
-//             .feed()
-//             .feed()
-//             // .cut()
-//             .close();
-//     });
-//     setTimeout(function () { incrementStepAndTurnLedOn(); }, 2000);
-// }
+function I2TprintText(text) {
+    console.log(`I2T | PRINTING TEXT...`)
+    device.open(function (error) {
+        thermalPrinter
+            .size(1, 1)
+            // .size(0.5, 0.5)
+            .text(text)
+            .feed()
+            .feed()
+            // .cut()
+            .close();
+    });
+    setTimeout(function () { incrementStepAndTurnLedOn(); }, 2000);
+}
 
-// function T2S() {
-//     T2ScaptureText();
-// }
+function T2S() {
+    T2ScaptureText();
+}
 
-// async function T2ScaptureText() {
-//     console.log("T2S | CAPTURING TEXT...");
-//     // NodeWebcam.capture(`${fileiter}-7.jpg`, { device: 'HD USB Camera', callbackReturn: "buffer" }, function (err, data) {
-//     // NodeWebcam.capture(`${fileiter}-7.jpg`, { callbackReturn: "buffer" }, function (err, data) {
-//     NodeWebcam.capture(`${fileiter}-7.jpg`, { device: 'HD USB Camera', callbackReturn: "buffer" }, function (err, data) {
-//         T2SrecognizeText(data)
-//     });
-// }
+async function T2ScaptureText() {
+    console.log("T2S | CAPTURING TEXT...");
+    // NodeWebcam.capture(`${fileiter}-7.jpg`, { device: 'HD USB Camera', callbackReturn: "buffer" }, function (err, data) {
+    // NodeWebcam.capture(`${fileiter}-7.jpg`, { callbackReturn: "buffer" }, function (err, data) {
+    NodeWebcam.capture(`${fileiter}-7.jpg`, { device: 'HD USB Camera', callbackReturn: "buffer" }, function (err, data) {
+        T2SrecognizeText(data)
+    });
+}
 
-// async function T2SrecognizeText(data) {
-//     console.log("T2S | RECOGNIZING TEXT...");
-//     const resultOCR = await recognize(data)
-//     let textOCR = resultOCR.replace(/\n/g, "");
-//     console.log(textOCR)
-//     T2SsaveText(textOCR)
-// }
+async function T2SrecognizeText(data) {
+    console.log("T2S | RECOGNIZING TEXT...");
+    const resultOCR = await recognize(data)
+    let textOCR = resultOCR.replace(/\n/g, "");
+    console.log(textOCR)
+    T2SsaveText(textOCR)
+}
 
-// function T2SsaveText(text) {
-//     console.log(`T2S | FETCHING TEXT...`)
-//     fs.writeFile(`${fileiter}-8.txt`, text, function (err, res) {
-//         T2SpredictSpeech(text);
-//     });
-// }
+function T2SsaveText(text) {
+    console.log(`T2S | FETCHING TEXT...`)
+    fs.writeFile(`${fileiter}-8.txt`, text, function (err, res) {
+        T2SpredictSpeech(text);
+    });
+}
 
 async function T2SpredictSpeech(text) {
     console.log("T2S | PREDICTING SPEECH...");
