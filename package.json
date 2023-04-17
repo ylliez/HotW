@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "HotW.mjs",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -31,7 +34,8 @@
     "node-webcam": "^0.8.1",
     "path": "^0.12.7",
     "png-to-jpeg": "^1.0.1",
-    "replicate": "^0.10.0",
+    "replicate": "^0.4.0",
+    "replicate-js": "github:nicholascelestin/replicate-js",
     "socket.io": "^4.6.1",
     "sound-play": "^1.1.0",
     "tesseractocr": "^2.0.3",
