@@ -49,8 +49,8 @@ const modelT2S = await replicate.model("afiaka87/tortoise-tts:e9658de4b325863c4f
 const modelS2T = await replicate.model("openai/whisper:e39e354773466b955265e969568deb7da217804d8e771ea8c9cd0cef6591f8bc")
 let predictionT2I, outputT2I, predictionI2T, predictionT2S, outputT2S, predictionS2T, outputS2T;
 let outputI2T = "an angry hamster eating brie in an impressionist style";
-const device = new USB(10473, 649);
-const thermalPrinter = new escpos.Printer(device);
+// const device = new USB(10473, 649);
+// const thermalPrinter = new escpos.Printer(device);
 let board, button, led;
 let unimpressed = true, delighted = true;
 let iter = 1, step = 1;
